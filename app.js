@@ -14,7 +14,7 @@ const app = express();
 const JWT_SECRET = 'your_secret_key';
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/authApp').then(() => console.log("Connected to MongoDB"))
+mongoose.connect('mongodb+srv://karanghorse91:VefMv5ajwzcwx5Zy@cluster0.if7lx6t.mongodb.net/').then(() => console.log("Connected to MongoDB"))
 
 
 
