@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
+</head>
+<body>
+    <h1>Signup</h1>
+    {{#if error}}<p style="color:red;">{{error}}</p>{{/if}}
+    <form action="/signup" method="POST">
+        <label>Username:</label>
+        <input type="text" name="name" required>
+        <label>Email:</label>
+        <input type="email" name="email" required>
+        <label>Password:</label>
+        <input type="password" name="password" required>
+        <button type="submit">Signup</button>
+    </form>
+    <p>Already have an account? <a href="/">Login here</a></p>
+</body>
+</html>
+    

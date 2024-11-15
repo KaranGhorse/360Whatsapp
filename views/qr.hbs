@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="csrf-token" content="dzXniXLllqTGxU9aN9cDg8CIkghoUW7P9pG7wsYW">
+    <title>Whatsapp Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.0/css/all.css">
+
+    <link rel="icon" href="https://cdn.pixabay.com/photo/2015/08/03/13/58/whatsapp-873316_1280.png" type="image/png">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+
+    <style>
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Header for main content */
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            color: #075e54;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        /* QR scanner section */
+        .scanner-section {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            Height: 250px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .scanner-info {
+            max-width: 300px;
+            padding-right: 20px;
+            flex: 1;
+        }
+
+        .scanner-info h3 {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .scanner-info ol {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .scanner-info li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        /* QR code display area */
+        .qr-code {
+            margin-left: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+
+            background-color: white;
+
+            display: flex;
+            justify-content: center;
+        }
+
+        .qr-code img {
+            width: 180px;
+            height: 180px;
+        }
+
+
+        .status-message {
+
+            color: #34b7f1;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px;
+            }
+
+            .sidebar-icons {
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .scanner-section {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .scanner-info {
+                max-width: 100%;
+                padding-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .qr-code {
+                margin-left: 0;
+            }
+
+            .qr-code img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .instructions h3 {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h2 {
+                font-size: 16px;
+            }
+
+            .scanner-info h3 {
+                font-size: 16px;
+            }
+
+            .qr-code img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .instructions h3 {
+                font-size: 14px;
+            }
+
+            .sidebar {
+                padding: 5px;
+            }
+
+            .icon {
+                width: 40px;
+                height: 40px;
+            }
+
+        }
+    </style>
+
+<style>
+    body,
+    html {
+        width: 100%;
+        height: 100% !important;
+    }
+
+    #findNewLeadloader {
+        width: 100vw;
+        min-height: 100%;
+        height: 100vh;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 999999;
+        background-color: #908f8faa;
+        background-color: #000000aa;
+        display: none;
+        overflow: hidden;
+    }
+
+    #finSec {
+        min-width: 200px;
+        width: 33.33%;
+        height: 200px;
+        padding: 10px;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ccc;
+        cursor: pointer;
+        transition: 0.3s linear;
+    }
+
+    .loader-11 {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        border: 6px solid;
+        border-color: #FFF #FFF transparent transparent;
+        -webkit-animation: rotation 1s linear infinite;
+        animation: rotation 1s linear infinite;
+    }
+
+    .loader-11:after,
+    .loader-11:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        border: 6px solid;
+        border-color: transparent transparent #047 #047;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        -webkit-animation: rotationBack 0.5s linear infinite;
+        animation: rotationBack 0.5s linear infinite;
+        transform-origin: center center;
+    }
+
+    .loader-11:before {
+        width: 64px;
+        height: 64px;
+        border-color: #FFF #FFF transparent transparent;
+        -webkit-animation: rotation 1.5s linear infinite;
+        animation: rotation 1.5s linear infinite;
+
+    }
+
+    @media (max-width: 600px) {
+        .loader-11:before {
+            width: 32px;
+            height: 32px;
+            border-color: #FFF #FFF transparent transparent;
+        }
+
+        .loader-11:after,
+        .loader-11:before {
+            width: 40px;
+            height: 40px;
+            border: 3px solid;
+            border-color: transparent transparent #047 #047;
+        }
+
+        .loader-11 {
+            width: 48px;
+            height: 48px;
+            border: 3px solid;
+            border-color: #FFF #FFF transparent transparent;
+        }
+    }
+
+
+    @-webkit-keyframes rotationBack {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(-360deg);
+        }
+    }
+
+    @keyframes rotationBack {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(-360deg);
+        }
+    }
+
+    @-webkit-keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .modal {
+        display: none;
+
+        position: fixed;
+        z-index: 100000000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+
+        position: fixed;
+        z-index: 100000000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 300px;
+        text-align: center;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #whatsappReadyMessage {
+        display: none;
+        color: green;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+</style>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #startup {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            position: absolute;
+            background-color: transparent;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner-container {
+            animation: rotate 2s linear infinite;
+            -webkit-animation: rotate 2s linear infinite;
+        }
+
+        .spinner-container .path {
+            stroke-dasharray: 1, 150;
+            /* 1%, 101% circumference */
+            stroke-dashoffset: 0;
+            stroke: rgba(27, 154, 89, 0.7);
+            stroke-linecap: round;
+            animation: dash 1.5s ease-in-out infinite;
+            -webkit-animation: dash 1.5s ease-in-out infinite;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes dash {
+            0% {
+                stroke-dasharray: 1, 150;
+                /* 1%, 101% circumference */
+                stroke-dashoffset: 0;
+            }
+
+            50% {
+                stroke-dasharray: 90, 150;
+                /* 70%, 101% circumference */
+                stroke-dashoffset: -35;
+                /* 25% circumference */
+            }
+
+            100% {
+                stroke-dasharray: 90, 150;
+                /* 70%, 101% circumference */
+                stroke-dashoffset: -124;
+                /* -99% circumference */
+            }
+        }
+
+        @-webkit-keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes dash {
+            0% {
+                stroke-dasharray: 1, 150;
+                /* 1%, 101% circumference */
+                stroke-dashoffset: 0;
+            }
+
+            50% {
+                stroke-dasharray: 90, 150;
+                /* 70%, 101% circumference */
+                stroke-dashoffset: -35;
+                /* 25% circumference */
+            }
+
+            100% {
+                stroke-dasharray: 90, 150;
+                /* 70%, 101% circumference */
+                stroke-dashoffset: -124;
+                /* -99% circumference */
+            }
+        }
+
+        .app-wrapper {
+            width: 100%;
+            height: 100%;
+        }
+
+        @media screen and (max-width: 600px) {
+            body {
+                overflow-x: auto;
+            }
+
+            .app-wrapper {
+                width: 600px;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="/assets/css/argon.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/custom.css" type="text/css">
+    <link rel="stylesheet" type="text/css"
+        href="https://wasender.amcoders.com/assets/plugins/toastify-js/src/toastify.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/qr-page.css">
+</head>
+
+<body>
+
+ <div id="findNewLeadloader">
+        <section id="finSec"><span class="loader-11"> </span></section>
+    </div>
+
+    <div class="main-content" id="panel">
+        <div class="header pb-6">
+            <div class="container-fluid">
+                <div class="header-body">
+
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid mt--6">
+            <div class="row justify-content-center">
+                <div class="col-sm-8">
+                    <div class="card card-neutral">
+                        <div class="card-header">
+                            <h4>Scan the QR Code On Your Whatsapp Mobile App</h4>
+                            <a href="/user/dashboard" class=" card-header-action btn btn-sm btn-neutral"><i
+                                    class="fa-solid fa-backward"></i>&nbspGo Back to
+                                Dashboard</a>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="status-message">Waiting for your phone...</p>
+                            <div id="logoutContainer"></div>
+                            <div class="d-flex justify-content-center qr-area">
+                                <div class="scanner-section">
+
+                                    <div class="qr-code" style="position: relative; overflow: hidden;">
+
+                                        <img id="qrImage"  src="{{qrCodeData}}">
+                                        <div id="startup">
+                                            <svg class="spinner-container" width="65px" height="65px"
+                                                viewBox="0 0 52 52">
+                                                <circle class="path" cx="26px" cy="26px" r="20px" fill="none"
+                                                    stroke-width="4px" />
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="instructions">
+                                <h3>Important Instructions</h3>
+                                <p><strong>Logging Out:</strong> Use the <strong>Logout</strong> button provided in this
+                                    application. Avoid logging out directly from the linked devices settings on your
+                                    mobile device.</p>
+                                <p><strong>Reconnecting:</strong> If you need to reconnect, simply scan the QR code
+                                    again to regain access.</p>
+                                <p><strong>Navigating Back:</strong> Click on the <strong>Go Back to Dashboard</strong>
+                                    button to exit the WhatsApp integration page properly.</p>
+                                <p><strong>Keep Your Account Secure:</strong> Do not share your QR code with others.
+                                    Regularly check your linked devices on your mobile WhatsApp settings to ensure only
+                                    recognized devices are connected.</p>
+                                <p><strong>Troubleshooting:</strong> If you encounter any issues, log back in using the
+                                    provided QR code. For assistance, contact our support team through the Help section
+                                    of the app.</p>
+                                <p>Thank you for following these instructions to keep your experience smooth and secure!
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>How To Scan?</h4>
+                            <div class="card-header-action">
+                                <a href="#" class="btn btn-sm btn-neutral">
+                                    <i class="fas fa-lightbulb"></i>&nbspGuide
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <img src="https://wasender.amcoders.com/uploads/scan-demo.gif" class="w-100">
+                        </div>
+                        <div class="card-footer">
+                            <div class="activities">
+                                <div class="activity">
+                                    <div class="activity-icon bg-primary text-white shadow-primary">
+                                        <i class="fa-solid fa-mobile-screen-button"></i>
+                                    </div>
+                                    <div class="activity-detail">
+                                        <div class="mb-2">
+                                            <span class="text-job text-primary">Step 1</span>
+                                            <span class="bullet"></span>
+                                        </div>
+                                        <p>Open WhatsApp on your phone</p>
+                                    </div>
+                                </div>
+                                <div class="activity">
+                                    <div class="activity-icon bg-primary text-white shadow-primary">
+                                        <i class="fa-solid fa-hand-pointer"></i>
+                                    </div>
+                                    <div class="activity-detail">
+                                        <div class="mb-2">
+                                            <span class="text-job text-primary">Step 2</span>
+                                            <span class="bullet"></span>
+                                        </div>
+                                        <p>Tap Menu or Settings and select Linked Devices</p>
+                                    </div>
+                                </div>
+                                <div class="activity">
+                                    <div class="activity-icon bg-primary text-white shadow-primary">
+                                        <i class="fa-solid fa-hand-pointer"></i>
+                                    </div>
+                                    <div class="activity-detail">
+                                        <div class="mb-2">
+                                            <span class="text-job text-primary">Step 3</span>
+                                            <span class="bullet"></span>
+                                        </div>
+                                        <p>Tap on Link a Device</p>
+                                    </div>
+                                </div>
+                                <div class="activity">
+                                    <div class="activity-icon bg-primary text-white shadow-primary">
+                                        <i class="fa fa-qrcode"></i>
+                                    </div>
+                                    <div class="activity-detail">
+                                        <div class="mb-2">
+                                            <span class="text-job text-primary">Step 4</span>
+                                            <span class="bullet"></span>
+                                        </div>
+                                        <p>Point your phone to this screen to capture the code</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script nonce="Hg5F/VDpALFrdOCYRvBAvQ==" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const qrCode = document.getElementById('qrImage');
+        function updateDisplayOnConnection(isConnected) {
+            console.log("isConn true in update displaye")
+            const existingTickMark = document.getElementById('tickMark');
+
+            if (isConnected) {
+                qrCode.style.display = 'none';
+                console.log("isConn true qr none")
+
+                // if (!existingTickMark) {
+                const tickMark = document.createElement('div');
+                tickMark.id = 'tickMark';
+                tickMark.innerHTML = '<i class="fa-solid fa-check"></i>';
+                tickMark.style.fontSize = '100px';
+                tickMark.style.color = 'green';
+                tickMark.style.display = 'flex';
+                tickMark.style.alignItems = 'center';
+                tickMark.style.justifyContent = 'center';
+                tickMark.style.backgroundColor = '#dcf7ffb3';
+                tickMark.style.width = '180px';
+                tickMark.style.height = '180px';
+                tickMark.style.borderRadius = '8px';
+
+                qrCode.parentElement.appendChild(tickMark);
+                // }
+
+                if (!logoutContainer.querySelector('button')) {
+                    console.log("isConn true creating button")
+                    const logoutButton = document.createElement('button');
+                    logoutButton.textContent = 'Logout';
+                    logoutButton.setAttribute('onclick', 'logoutWhatsApp()')
+                    // logoutButton.onclick = () => {
+                    // window.location.href = '/logoutWA'; // Adjust as per your routing
+                    // };
+                    logoutContainer.appendChild(logoutButton);
+                }
+
+                // isTickMarkDisplayed = true;
+            }
+            else if (!isConnected) {
+                qrCode.style.display = 'block';
+                if (existingTickMark) {
+                    existingTickMark.remove();
+                }
+                // isTickMarkDisplayed = false;
+            }
+
+        }
+
+        function logoutWhatsApp() {
+            findLead()
+            console.log("logout whatsapp fun")
+            window.location.href = '/logoutWA';
+            removeLoader()
+        }
+
+
+        // const pageRefreshInterval = setInterval(() => {
+        //     console.log("start")
+        //     fetch('/connection-status')
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             if (!data.isConnected) {
+        // 
+        //             console.log("isConn true")
+        //             location.reload();
+        //               // axios.get('/qr').then(res => console.log(res.data))
+        // 
+        //             }
+        //             else{
+        //             console.log("isConn false")
+        //                 updateDisplayOnConnection(true)
+        //                 clearInterval(pageRefreshInterval)
+        //             }
+        //         })
+        //         .catch(error => {
+        //             console.error('Error during page refresh:', error);
+        //         });
+        // }, 5000);
+
+
+        // const pageRefreshInterval = setInterval(async () => {
+        //     console.log("start");
+        //     try {
+        //         const response = await axios.get('/connection-status');
+        //         const data = response.data;
+        // 
+        //         if (!data.isConnected) {
+        //             console.log("isConn false");
+        //            // location.reload(); 
+        //            const qrResponse = await axios.get('/qr/again');
+        //             qrCode.setAttribute('src', qrResponse.data.qrCodeData)
+        // 
+        //             if(qrResponse.data.isConnected){
+        //                 updateDisplayOnConnection(true); 
+        //                 clearInterval(pageRefreshInterval); 
+        //             }
+        //         } else {
+        //             console.log("isConn false");
+        //             updateDisplayOnConnection(true); 
+        //             clearInterval(pageRefreshInterval); 
+        //         }
+        //     } catch (error) {
+        //         console.error('Error during page refresh:', error);
+        //     }
+        // }, 5000);
+        // 
+
+        async function tryGenQr() {
+            console.log("try req to qr");
+            await axios.get('/qr');
+            console.log("try req to qr end");
+
+        }
+        tryGenQr();
+        let is_QRCODE = false;
+        let qrResponse;
+
+        let isClearFistInterval = false;
+        const getQrIntervalId = setInterval(async () => {
+            try {
+                let qrResponse = await axios.get('/again');
+                qrCode.setAttribute('src', qrResponse.data.qrCodeData)
+                if (qrResponse.data.qrCodeData !== null) {
+                    isClearFistInterval = true;
+                    let load = document.querySelector('#startup')
+                    load.style.display = 'none';
+                    clearInterval(getQrIntervalId)
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }, 5000)
+
+        const showConnectedIntervalId = setInterval(async () => {
+            try {
+                if (isClearFistInterval) {
+                    let isConnResponse = await axios.get('/ready');
+                    if (isConnResponse.data.isConnected) {
+                        updateDisplayOnConnection(true);
+                        clearInterval(showConnectedIntervalId)
+                    }
+
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }, 5000)
+
+
+    </script>
+
+
+
+    {{!--
+    <script src="https://wasender.amcoders.com/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://wasender.amcoders.com/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://wasender.amcoders.com/assets/vendor/js-cookie/js.cookie.js"></script>
+    <script src="https://wasender.amcoders.com/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="https://wasender.amcoders.com/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+
+    <script src="https://wasender.amcoders.com/assets/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="https://wasender.amcoders.com/assets/plugins/toastify-js/src/toastify.js"></script>
+    <script src="https://wasender.amcoders.com/assets/plugins/form.js?v=2"></script>
+    <script src="https://wasender.amcoders.com/assets/plugins/canvas-confetti/confetti.browser.min.js"></script>
+    <script src="https://wasender.amcoders.com/assets/js/pages/user/qr.js"></script>
+    <script src="https://wasender.amcoders.com/assets/plugins/pace/pace.min.js"></script>
+    <script src="https://wasender.amcoders.com/assets/js/argon.js?v=1.1.1"></script> --}}
+
+     <script>
+    function findLead(){
+        console.log('clickkeeedddd Loader function ')
+      
+        let loadBox = document.querySelector('#findNewLeadloader')
+            console.log(loadBox)
+        let body = document.querySelector('body')
+        if(loadBox){
+            console.log('clickkeeedddd')
+            loadBox.style.display = 'flex'
+            body.style.height =  `100vh !important`
+            body.style.overflow = 'hidden'
+        }
+    }
+    function removeLoader(){
+        console.log('clickkeeedddd remove Loader function ')
+        let loadBox = document.querySelector('#findNewLeadloader')
+        if(loadBox){
+            console.log('clickkeeedddd')
+            loadBox.style.display = 'none' 
+        }
+    }
+</script>
+</body>
+
+</html>

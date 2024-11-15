@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{user.name}}!</h1>
+    <p>This is your dashboard.</p><br><br>
+
+    <div class="social-box twitter text-center">
+                                <i class="fa-brands fa-whatsapp fa-2x"></i>
+
+                                <div id="phone-number-container" class="font-15" style="font-weight: bold;">
+                                    <span id="connected-number">
+                                        {{#if wa.isConnected}}
+                                        {{wa.connectedPhoneNumber}}
+                                        {{else}}
+
+                                        {{/if}}
+                                    </span>
+                                </div>
+
+                                <a href="/scan" onclick="findLead()" id="whatsapp-Connect-Btn"
+                                    class="btn btn-sm btn-outline-secondary">Connect
+                                    Now</a>
+                                <a onclick="logoutWhatsapp()"  id="whatsapp-Logout-Btn" class="btn btn-sm btn-danger"
+                                    style="display: none;">Logout</a>
+                            </div>
+    <a href="/logout">Logout</a>
+    <a href="/logoutWA">Logout whatsapp</a>
+    <a href="/remark/add">add remark</a>
+
+
+    <script>
+        async function checkConnectionStatus() {
+            try {
+                const response = await fetch('/connection-status');
+                const data = await response.json();
+                
+                const isConnected = data.isConnected;
+                const connectBtn = document.getElementById('whatsapp-Connect-Btn');
+                const logoutBtn = document.getElementById('whatsapp-Logout-Btn');
+
+                if (isConnected) {
+
+                    connectBtn.textContent = 'Connected';
+                    connectBtn.classList.remove('btn-outline-secondary');
+                    connectBtn.classList.add('btn-success');
+                    connectBtn.setAttribute('disabled', true);
+
+                    // Show the Logout button
+                    logoutBtn.style.display = 'inline-block'; // Show the Logout button
+                } else {
+                    // Reset the Connect button to "Connect Now"
+                    connectBtn.textContent = 'Connect Now';
+                    connectBtn.classList.remove('btn-success');
+                    connectBtn.classList.add('btn-outline-secondary');
+                    connectBtn.removeAttribute('disabled'); // Enable the Connect button again
+
+                    // Hide the Logout button
+                    logoutBtn.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error fetching connection status:', error);
+            }
+        }
+
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', checkConnectionStatus);
+]
+    </script>
+</body>
+</html>
