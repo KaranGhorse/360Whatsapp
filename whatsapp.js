@@ -247,7 +247,7 @@ router.get("/connection-status", authenticateToken, async (req, res) => {
     // console.warn(global.clients[admin._id].QR_CODE_DATA)
     // handleDisconnection(client, admin._id);
   }
-  let userWA = await waModel.findOne({ cid: user.cid });
+  let userWA = await waModel.findOne({ cid: admin._id });
 
   // isConnected = false;
   if (userWA) {
