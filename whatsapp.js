@@ -251,7 +251,7 @@ router.get("/connection-status", authenticateToken, async (req, res) => {
 
   // isConnected = false;
   if (userWA) {
-    console.log(userWA.isConnected, user.name, "check connection//");
+    console.log(userWA.isConnected, userWA.name, "check connection//");
 
     return res.json({ isConnected: userWA.isConnected });
   } else {
